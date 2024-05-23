@@ -11,14 +11,14 @@ public class Tyre {
     private String brand;
     private int size;
     private int pressure;
-    private String position;
+    private int position;
 
     // Constructors, getters, setters
     public Tyre() {
 
     }
 
-    public Tyre(String brand, int size, int pressure, String position) {
+    public Tyre(String brand, int size, int pressure, int position) {
         this.brand = brand;
         this.size = size;
         this.pressure = pressure;
@@ -49,11 +49,15 @@ public class Tyre {
         this.pressure = pressure;
     }
 
-    public String getPosition() {
+    public int getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(int position) {
         this.position = position;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
