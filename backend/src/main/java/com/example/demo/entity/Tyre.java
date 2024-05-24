@@ -56,4 +56,8 @@ public class Tyre {
     public void setPosition(String position) {
         this.position = position;
     }
+
+    public Long getId() {
+        return id;
+    }
 }
