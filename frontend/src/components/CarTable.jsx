@@ -17,6 +17,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DirectionsCarOutlinedIcon from '@mui/icons-material/DirectionsCarOutlined';
 import TyreModal from './TyreModal';
 import CarViewModal from './ViewCarModal';
+import CarForm from './CarForm';
 
 const CarTable = () => {
   const [Data, setData] = useState([]);
@@ -57,7 +58,7 @@ const CarTable = () => {
 const handleCloseDetailsPanel = () => {
   setOpenDetailModal(false);
 };
-  const handleDeleteRequirement = async (carId) => {
+  const handleDeleteCar = async (carId) => {
     try {
       await CarService.deletecar(carId);
       fetchData();
@@ -65,6 +66,15 @@ const handleCloseDetailsPanel = () => {
       console.error('Error deleting car:', error);
     }
   };
+  const handleAddCar = async (newCar) => {
+    try {
+        await CarService.postcar(newCar);
+        await fetchData();
+        setOpenFormModal(false);
+    } catch (error) {
+        console.error('Error adding requirement:', error);
+    }
+};
 
   useEffect(() => {
     if (!dataFetched) {
@@ -75,6 +85,7 @@ const handleCloseDetailsPanel = () => {
 
   return (
     <Paper sx={{ padding: '5px', width: '90%', marginTop: '10px', marginLeft: '10px', marginRight: '10px' }}>
+      <CarForm onSubmit={handleAddCar}/>
       <TableContainer component={Paper}>
         <Table size="small" aria-label="requirement table">
           <TableHead sx={{ backgroundColor: '#f5f5f5'}}>
@@ -132,7 +143,7 @@ const handleCloseDetailsPanel = () => {
                     <IconButton
                       size="medium"
                       color="error"
-                      onClick={() => handleDeleteRequirement(car.id)}
+                      onClick={() => handleDeleteCar(car.id)}
                     >
                       <DeleteIcon fontSize="small" />
                     </IconButton>
