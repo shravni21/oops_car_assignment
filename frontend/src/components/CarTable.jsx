@@ -14,25 +14,27 @@ import {
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { CarService } from '../api/CarService';
 import DeleteIcon from '@mui/icons-material/Delete';
-import DocumentModal from './DocumentModal';
-import SyncIcon from '@mui/icons-material/Sync';
+import DirectionsCarOutlinedIcon from '@mui/icons-material/DirectionsCarOutlined';
+import TyreModal from './TyreModal';
+import CarViewModal from './ViewCarModal';
 
-const Requirement = () => {
-  const [requirementData, setRequirementData] = useState([]);
+const CarTable = () => {
+  const [Data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [documents, setDocuments] = useState([]);
+  const [tyres, setTyres] = useState([]);
   const [openModal, setOpenModal] = useState(false);
-  const [syncLoading, setSyncLoading] = useState(false);
-
+  const [openDetailModal, setOpenDetailModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [dataFetched, setDataFetched] = useState(false);
   const fetchData = async () => {
     setLoading(true);
     try {
       setTimeout(async () => {
         const data = await CarService.getAllcars();
-        setRequirementData(data);
+        setData(data);
         setLoading(false);
-      }, 1000); 
+      }, 1000);
     } catch (error) {
       console.error('Error fetching data:', error);
       setLoading(false);
@@ -40,42 +42,50 @@ const Requirement = () => {
     }
   };
 
-  const handleViewDocuments = (docList) => {
-    setDocuments(docList);
+  const handleViewTyres = (tyreList) => {
+    setTyres(tyreList);
     setOpenModal(true);
   };
 
   const handleCloseModal = () => {
     setOpenModal(false);
   };
-
+  const handleViewDetails = (item) => {
+    setSelectedItem(item);
+    setOpenDetailModal(true);
+};
+const handleCloseDetailsPanel = () => {
+  setOpenDetailModal(false);
+};
   const handleDeleteRequirement = async (carId) => {
     try {
       await CarService.deletecar(carId);
-      fetchData(); // Fetch updated data after deletion
+      fetchData();
     } catch (error) {
       console.error('Error deleting car:', error);
     }
   };
 
-
   useEffect(() => {
-    fetchData(); // Fetch data on component mount
-  }, []);
+    if (!dataFetched) {
+      fetchData();
+      setDataFetched(true);
+    }
+  }, [dataFetched]);
 
   return (
     <Paper sx={{ padding: '5px', width: '90%', marginTop: '10px', marginLeft: '10px', marginRight: '10px' }}>
       <TableContainer component={Paper}>
         <Table size="small" aria-label="requirement table">
-          <TableHead>
+          <TableHead sx={{ backgroundColor: '#f5f5f5'}}>
             <TableRow>
               <TableCell>Brand</TableCell>
               <TableCell>Model</TableCell>
               <TableCell>Year</TableCell>
               <TableCell>Engine Model</TableCell>
-              <TableCell>Tyre Brand</TableCell>
-              <TableCell>Tyre Size</TableCell>
-              <TableCell>Tyre Pressure</TableCell>
+              <TableCell>Fuel Type</TableCell>
+              <TableCell>HorsePower</TableCell>
+              <TableCell>Tyres of Car</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -93,31 +103,38 @@ const Requirement = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              requirementData.map((car) => (
+              Data.map((car) => (
                 <TableRow key={car.id}>
                   <TableCell>{car.brand}</TableCell>
                   <TableCell>{car.model}</TableCell>
                   <TableCell>{car.year}</TableCell>
-                  <TableCell>{car.engine.model}</TableCell>
-                  {car.tyres.map((tyre, index) => (
-                    <React.Fragment key={`${car.id}-${index}`}>
-                      <TableCell>{tyre.brand}</TableCell>
-                      <TableCell>{tyre.size}</TableCell>
-                      <TableCell>{tyre.pressure}</TableCell>
-                    </React.Fragment>
-                  ))}
+                  <TableCell >{car.engine.model}</TableCell>
+                  <TableCell >{car.engine.fuelType}</TableCell>
+                  <TableCell >{car.engine.horsepower}</TableCell>
                   <TableCell>
                     <IconButton
                       size="small"
-                      onClick={() => handleViewDocuments(car.tyres)}
+                      onClick={() => handleViewTyres(car.tyres)}
                     >
-                      <VisibilityIcon />
+                      <DirectionsCarOutlinedIcon />
                     </IconButton>
+
+                  </TableCell>
+                  <TableCell align="left">
                     <IconButton
-                      size="small"
+                      size="medium"
+                      style={{ color: '#455a64' }}
+                      onClick={() => handleViewDetails(car)}
+                    >
+                      <VisibilityIcon fontSize="small" />
+                    </IconButton>
+
+                    <IconButton
+                      size="medium"
+                      color="error"
                       onClick={() => handleDeleteRequirement(car.id)}
                     >
-                      <DeleteIcon />
+                      <DeleteIcon fontSize="small" />
                     </IconButton>
                   </TableCell>
                 </TableRow>
@@ -126,16 +143,13 @@ const Requirement = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <DocumentModal documents={documents} openModal={openModal} onCloseModal={handleCloseModal} />
-      <IconButton onClick={handleSyncAfterCreate} style={{ marginRight: '10px', float: 'right' }}>
-        {syncLoading ? (
-          <CircularProgress size={24} style={{ color: 'blue' }} />
-        ) : (
-          <SyncIcon fontSize='small' style={{ color: 'blue' }} />
-        )}
-      </IconButton>
+      <TyreModal tyres={tyres} openModal={openModal} onCloseModal={handleCloseModal} />
+      {/* <CarDetailsPanel  selectedCar= {selectedItem}  onClosePanel= {handleCloseDetailsPanel}/>
+       */}
+       <CarViewModal selectedCar={selectedItem} openModal={openDetailModal} onCloseModal={handleCloseDetailsPanel}/>
+
     </Paper>
   );
 };
 
-export default Requirement;
+export default CarTable;
