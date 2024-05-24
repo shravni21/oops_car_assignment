@@ -9,7 +9,6 @@ import {
   Paper,
   IconButton,
   CircularProgress,
-  Chip,
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { CarService } from '../api/CarService';
@@ -18,6 +17,7 @@ import DirectionsCarOutlinedIcon from '@mui/icons-material/DirectionsCarOutlined
 import TyreModal from './TyreModal';
 import CarViewModal from './ViewCarModal';
 import CarForm from './CarForm';
+import EditCar from './EditCar';
 
 const CarTable = () => {
   const [Data, setData] = useState([]);
@@ -54,10 +54,10 @@ const CarTable = () => {
   const handleViewDetails = (item) => {
     setSelectedItem(item);
     setOpenDetailModal(true);
-};
-const handleCloseDetailsPanel = () => {
-  setOpenDetailModal(false);
-};
+  };
+  const handleCloseDetailsPanel = () => {
+    setOpenDetailModal(false);
+  };
   const handleDeleteCar = async (carId) => {
     try {
       await CarService.deletecar(carId);
@@ -68,14 +68,22 @@ const handleCloseDetailsPanel = () => {
   };
   const handleAddCar = async (newCar) => {
     try {
-        await CarService.postcar(newCar);
-        await fetchData();
-        setOpenFormModal(false);
+      await CarService.postcar(newCar);
+      await fetchData();
+      setOpenFormModal(false);
     } catch (error) {
-        console.error('Error adding requirement:', error);
+      console.error('Error adding requirement:', error);
     }
-};
-
+  };
+  const handleUpdateCar = async (existingCar) => {
+    try {
+      await CarService.updatecar(existingCar.id,existingCar);
+      await fetchData();
+      setOpenFormModal(false);
+    } catch (error) {
+      console.error('Error adding requirement:', error);
+    }
+  };
   useEffect(() => {
     if (!dataFetched) {
       fetchData();
@@ -85,10 +93,10 @@ const handleCloseDetailsPanel = () => {
 
   return (
     <Paper sx={{ padding: '5px', width: '90%', marginTop: '10px', marginLeft: '10px', marginRight: '10px' }}>
-      <CarForm onSubmit={handleAddCar}/>
+      <CarForm onSubmit={handleAddCar} />
       <TableContainer component={Paper}>
         <Table size="small" aria-label="requirement table">
-          <TableHead sx={{ backgroundColor: '#f5f5f5'}}>
+          <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
             <TableRow>
               <TableCell>Brand</TableCell>
               <TableCell>Model</TableCell>
@@ -139,7 +147,8 @@ const handleCloseDetailsPanel = () => {
                     >
                       <VisibilityIcon fontSize="small" />
                     </IconButton>
-
+                    <EditCar car={car}
+                      onUpdate={handleUpdateCar} />
                     <IconButton
                       size="medium"
                       color="error"
@@ -155,9 +164,7 @@ const handleCloseDetailsPanel = () => {
         </Table>
       </TableContainer>
       <TyreModal tyres={tyres} openModal={openModal} onCloseModal={handleCloseModal} />
-      {/* <CarDetailsPanel  selectedCar= {selectedItem}  onClosePanel= {handleCloseDetailsPanel}/>
-       */}
-       <CarViewModal selectedCar={selectedItem} openModal={openDetailModal} onCloseModal={handleCloseDetailsPanel}/>
+      <CarViewModal selectedCar={selectedItem} openModal={openDetailModal} onCloseModal={handleCloseDetailsPanel} />
 
     </Paper>
   );

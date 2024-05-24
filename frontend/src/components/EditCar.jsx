@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormControl, InputLabel, MenuItem, Select, Modal, Paper, TextField, Button, Typography, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import EditIcon from '@mui/icons-material/Edit';
 
-const CarForm = ({ onSubmit }) => {
+const EditCar = ({ car, onUpdate }) => {
     const [open, setOpen] = useState(false);
     const [carData, setCarData] = useState({
         brand: '',
@@ -20,6 +21,19 @@ const CarForm = ({ onSubmit }) => {
             { brand: '', size: '', pressure: '', position: '' }
         ]
     });
+
+    useEffect(() => {
+        if (car) {
+            setCarData({
+                id: car.id,
+                brand: car.brand,
+                model: car.model,
+                year: car.year,
+                engine: car.engine,
+                tyres: car.tyres
+            });
+        }
+    }, [car]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -60,41 +74,25 @@ const CarForm = ({ onSubmit }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSubmit(carData);
-        setCarData({
-            brand: '',
-            model: '',
-            year: '',
-            engine: {
-                model: '',
-                horsepower: '',
-                fuelType: ''
-            },
-            tyres: [
-                { brand: '', size: '', pressure: '', position: '' },
-                { brand: '', size: '', pressure: '', position: '' },
-                { brand: '', size: '', pressure: '', position: '' },
-                { brand: '', size: '', pressure: '', position: '' }
-            ]
-        });
+        onUpdate(carData);
         handleCloseModal();
     };
 
     return (
         <>
-            <Button variant="contained" onClick={handleOpenModal} style={{ marginRight: '-10px', float: 'right' }}>
-                Add Car
-            </Button>
+            <IconButton size="medium" color="primary" onClick={handleOpenModal}>
+                <EditIcon fontSize="small" />
+            </IconButton>
             <Modal open={open}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
                     <Paper style={{ width: '80%', maxWidth: '700px', bgcolor: '#fff', boxShadow: 24, p: 4, padding: '2rem', overflowY: 'auto', transition: 'transform 0.3s ease-in-out', scrollbarWidth: 'thin', scrollbarColor: '#fff transparent', position: 'relative' }}>
                         <div style={{ maxHeight: 'calc(100vh - 100px)', overflowY: 'auto' }}>
                             <Typography variant="h5" gutterBottom>
-                                Car Details
-                                <IconButton onClick={handleCloseModal}>
-                                    <CloseIcon />
-                                </IconButton>
+                                Edit Car
                             </Typography>
+                            <IconButton onClick={handleCloseModal} style={{ position: 'absolute', top: '0', right: '0', margin: '8px' }}>
+                                <CloseIcon />
+                            </IconButton>
 
                             <form onSubmit={handleSubmit}>
                                 <TextField
@@ -193,7 +191,7 @@ const CarForm = ({ onSubmit }) => {
                                             size='small'
                                             style={{ marginLeft: '2rem', marginRight: '0.5rem', flex: 1 }}
                                         />
-                                         <TextField
+                                        <TextField
                                             id={`tyre-position-${index}`}
                                             select
                                             label="Position"
@@ -208,11 +206,24 @@ const CarForm = ({ onSubmit }) => {
                                             <MenuItem value="Rear Left">Rear Left</MenuItem>
                                             <MenuItem value="Rear Right">Rear Right</MenuItem>
                                         </TextField>
+                                        {/* <InputLabel id={`tyre-position-${index}`}>Tyre {index + 1} Position</InputLabel>
+                                        <Select
+                                            labelId={`tyre-position-${index}`}
+                                            name="position"
+                                            value={tyre.position}
+                                            size='small'
+                                            onChange={(e) => handleTyreChange(index, e)}
+                                        >
+                                            <MenuItem value="Front Left">Front Left</MenuItem>
+                                            <MenuItem value="Front Right">Front Right</MenuItem>
+                                            <MenuItem value="Rear Left">Rear Left</MenuItem>
+                                            <MenuItem value="Rear Right">Rear Right</MenuItem>
+                                        </Select> */}
                                     </div>
                                 ))}
                                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                                     <Button type="submit" variant="contained" color="primary" style={{ marginTop: '1rem' }}>
-                                        Submit
+                                        Save Changes
                                     </Button>
                                 </div>
                             </form>
@@ -224,4 +235,4 @@ const CarForm = ({ onSubmit }) => {
     );
 };
 
-export default CarForm;
+export default EditCar;
