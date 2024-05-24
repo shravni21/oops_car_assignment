@@ -37,7 +37,7 @@ public class TyreServiceImpl implements TyreService{
             toUpdate.setBrand(tyre.getBrand() != null ? tyre.getBrand() : toUpdate.getBrand());
             toUpdate.setSize(tyre.getSize() != 0 ? tyre.getSize() : toUpdate.getSize());
             toUpdate.setPressure(tyre.getPressure() != 0 ? tyre.getPressure() : toUpdate.getPressure());
-            toUpdate.setPosition(tyre.getPosition() != 0 ? tyre.getPosition() : toUpdate.getPosition());
+            toUpdate.setPosition(tyre.getPosition() != null ? tyre.getPosition() : toUpdate.getPosition()); // Update only if provided
             return tyreRepository.save(toUpdate);
         }
         return null;

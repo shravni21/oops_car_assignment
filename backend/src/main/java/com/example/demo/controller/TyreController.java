@@ -10,28 +10,32 @@ import java.util.List;
 @RestController
 @RequestMapping("/tyres")
 public class TyreController {
+
     @Autowired
     private TyreService tyreService;
 
     @PostMapping
-    public Tyre createTyre(@RequestBody Tyre tyre){
+    public Tyre createTyre(@RequestBody Tyre tyre) {
         return tyreService.createTyre(tyre);
     }
+
     @GetMapping
-    public List<Tyre> getAllTyres(){
+    public List<Tyre> getAllTyres() {
         return tyreService.getAllTyres();
     }
+
     @GetMapping("/{id}")
-    public Tyre getCarById(@PathVariable Long id) {
+    public Tyre getTyreById(@PathVariable Long id) {
         return tyreService.getTyre(id);
     }
+
     @PutMapping("/{id}")
-    public Tyre updateCar(@PathVariable Long id, @RequestBody Tyre tyre) {
+    public Tyre updateTyre(@PathVariable Long id, @RequestBody Tyre tyre) {
         return tyreService.updateTyre(id, tyre);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCar(@PathVariable Long id) {
+    public void deleteTyre(@PathVariable Long id) {
         tyreService.deleteTyre(id);
     }
 }
