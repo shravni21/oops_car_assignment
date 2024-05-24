@@ -3,7 +3,7 @@ import { FormControl, InputLabel, MenuItem, Select, Modal, Paper, TextField, But
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 
-const EditCar = ({ car, onUpdate }) => {
+const EditCar = ({ onUpdate }) => {
     const [open, setOpen] = useState(false);
     const [carData, setCarData] = useState({
         brand: '',
@@ -206,19 +206,6 @@ const EditCar = ({ car, onUpdate }) => {
                                             <MenuItem value="Rear Left">Rear Left</MenuItem>
                                             <MenuItem value="Rear Right">Rear Right</MenuItem>
                                         </TextField>
-                                        {/* <InputLabel id={`tyre-position-${index}`}>Tyre {index + 1} Position</InputLabel>
-                                        <Select
-                                            labelId={`tyre-position-${index}`}
-                                            name="position"
-                                            value={tyre.position}
-                                            size='small'
-                                            onChange={(e) => handleTyreChange(index, e)}
-                                        >
-                                            <MenuItem value="Front Left">Front Left</MenuItem>
-                                            <MenuItem value="Front Right">Front Right</MenuItem>
-                                            <MenuItem value="Rear Left">Rear Left</MenuItem>
-                                            <MenuItem value="Rear Right">Rear Right</MenuItem>
-                                        </Select> */}
                                     </div>
                                 ))}
                                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
