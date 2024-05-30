@@ -89,10 +89,11 @@ const EditCar = ({ car,onUpdate }) => {
                         <div style={{ maxHeight: 'calc(100vh - 100px)', overflowY: 'auto' }}>
                             <Typography variant="h5" gutterBottom>
                                 Edit Car
-                            </Typography>
-                            <IconButton onClick={handleCloseModal} style={{ position: 'absolute', top: '0', right: '0', margin: '8px' }}>
+                                <IconButton onClick={handleCloseModal}>
                                 <CloseIcon />
                             </IconButton>
+                            </Typography>
+
 
                             <form onSubmit={handleSubmit}>
                                 <TextField
