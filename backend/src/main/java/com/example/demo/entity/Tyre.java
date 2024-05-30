@@ -14,10 +14,20 @@ public class Tyre {
     private String position;
 
     // Constructors, getters, setters
+    /**
+     * Default constructor for Tyre.
+     */
     public Tyre() {
 
     }
-
+    /**
+     * Constructor to initialize Tyre with specified attributes.
+     *
+     * @param brand    The brand of the Tyre.
+     * @param size     The size of the Tyre.
+     * @param pressure The pressure of the Tyre.
+     * @param position The position of the Tyre.
+     */
     public Tyre(String brand, int size, int pressure, String position) {
         this.brand = brand;
         this.size = size;

@@ -24,20 +24,46 @@ public class CarServiceImpl implements CarService {
     @Autowired
     private TyreRepository tyreRepository;
 
+    /**
+     * Creates a new Car entity.
+     *
+     * @param car The Car object to be created.
+     * @return The created Car object.
+     */
     @Override
     public Car createCar(Car car) {
         return carRepository.save(car);
     }
 
+    /**
+     * Retrieves all Car entities.
+     *
+     * @return List of all Car objects.
+     */
     @Override
     public List<Car> getAllCars() {
         return carRepository.findAll();
     }
+
+    /**
+     * Retrieves a Car entity by its ID.
+     *
+     * @param id The ID of the Car to retrieve.
+     * @return The Car object with the specified ID, or null if not found.
+     */
     @Override
     public Car getCar(Long id) {
         Optional<Car> car = carRepository.findById(id);
         return car.orElse(null);
     }
+
+    /**
+     * Updates an existing Car entity with the specified ID.
+     *
+     * @param id  The ID of the Car to update.
+     * @param car The updated Car object.
+     * @return The updated Car object.
+     */
     @Override
     public Car updateCar(Long id, Car car) {
         Optional<Car> existingCarOptional = carRepository.findById(id);
@@ -59,6 +85,11 @@ public class CarServiceImpl implements CarService {
         return null;
     }
 
+    /**
+     * Deletes a Car entity by its ID.
+     *
+     * @param id The ID of the Car to delete.
+     */
     @Override
     public void deleteCar(Long id) {
         carRepository.deleteById(id);
