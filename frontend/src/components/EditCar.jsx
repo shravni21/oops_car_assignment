@@ -3,7 +3,7 @@ import { FormControl, InputLabel, MenuItem, Select, Modal, Paper, TextField, But
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 
-const EditCar = ({ onUpdate }) => {
+const EditCar = ({ car,onUpdate }) => {
     const [open, setOpen] = useState(false);
     const [carData, setCarData] = useState({
         brand: '',
