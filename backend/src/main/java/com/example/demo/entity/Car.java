@@ -1,18 +1,13 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Car {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String brand;
-    private String model;
-    private int year;
-
+@DiscriminatorValue("Car")
+public class Car extends Vehicle {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "engine_id")
     private Engine engine;
@@ -21,51 +16,30 @@ public class Car {
     @JoinColumn(name = "car_id")
     private List<Tyre> tyres;
 
+    /**
+     * Default constructor initializing the list of tyres.
+     */
     public Car() {
-        this.tyres = tyres;
+        this.tyres = new ArrayList<>();
     }
-
-    public Car(String brand, String model, int year, Engine engine, List<Tyre> Tyres) {
-        this.brand = brand;
-        this.model = model;
-        this.year = year;
+    /**
+     * Constructor to initialize Car with specified attributes.
+     *
+     * @param brand  The brand of the Car.
+     * @param model  The model of the Car.
+     * @param year   The year of manufacture of the Car.
+     * @param engine The Engine object associated with the Car.
+     * @param tyres  The list of Tyre objects associated with the Car.
+     */
+    public Car(String brand, String model, int year, Engine engine, List<Tyre> tyres) {
+        super.setBrand(brand);
+        super.setModel(model);
+        super.setYear(year);
         this.engine = engine;
         this.tyres = tyres;
     }
 
     // Getters and setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
     public Engine getEngine() {
         return engine;
     }

@@ -13,10 +13,19 @@ public class Engine {
     private String fuelType;
 
     // Constructors, getters, setters
+    /**
+     * Default constructor for Engine.
+     */
     public Engine() {
 
     }
-
+    /**
+     * Constructor to initialize Engine with specified attributes.
+     *
+     * @param model      The model of the Engine.
+     * @param horsepower The horsepower of the Engine.
+     * @param fuelType   The fuel type of the Engine.
+     */
     public Engine(String model, int horsepower, String fuelType) {
         this.model = model;
         this.horsepower = horsepower;
